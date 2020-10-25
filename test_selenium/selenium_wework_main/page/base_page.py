@@ -30,3 +30,6 @@ class BasePage:
 
     def wait_for_click(self,locator, time=10):
         WebDriverWait(self._driver,time).until(expected_conditions.element_to_be_clickable(locator))
+
+    def wait_for_elem(self,conditions, time=10):
+        WebDriverWait(self._driver,time).until(conditions)

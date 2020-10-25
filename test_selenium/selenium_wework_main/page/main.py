@@ -18,8 +18,13 @@ class Main(BasePage):
         # sleep(2)
         # self.find(By.CSS_SELECTOR,'.index_service_cnt_itemWrap:nth-child(1)').click()
         self.find(By.ID,'menu_contacts').click()
-        locator = (By.CSS_SELECTOR,'.js_has_member>div:nth-child(1)>a:nth-child(2)')
+        def wait_add_member(x):
+            elements_len = len(self.finds(By.CSS_SELECTOR,'#username'))
+            if elements_len <= 0:
+                self.find(By.CSS_SELECTOR,'.js_has_member>div:nth-child(1)>a:nth-child(2)').click()
+            return elements_len > 0
+        # locator = (By.CSS_SELECTOR,'.js_has_member>div:nth-child(1)>a:nth-child(2)')
         # WebDriverWait(self._driver,10).until(expected_conditions.element_to_be_clickable(locator))
-        self.wait_for_click(locator)
-        self.find(By.CSS_SELECTOR,'.js_has_member>div:nth-child(1)>a:nth-child(2)').click()
+        self.wait_for_elem(wait_add_member)
+        # self.find(By.CSS_SELECTOR,'.js_has_member>div:nth-child(1)>a:nth-child(2)').click()
         return AddMember(self._driver)
