@@ -10,5 +10,5 @@ class TestAddMember:
     def test_addmember(self):
         add_member = self.main.goto_add_member()
         add_member.add_member()
-        sleep(2)
-        assert "abcffff" in add_member.get_member()
+        # sleep(2)
+        assert add_member.get_member("测试员99")
