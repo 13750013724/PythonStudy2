@@ -13,9 +13,9 @@ class AddMember(BasePage):
         self.find(By.ID,'username').send_keys("abcffff")
         self.find(By.ID,'memberAdd_acctid').send_keys("sdasd")
         self.find(By.ID,'memberAdd_phone').send_keys("11111111111")
-        elements = self.finds(By.CSS_SELECTOR,'.js_btn_save')
-        # print(elements)
-        elements[1].click()
+        self.find(By.CSS_SELECTOR, '.js_btn_save').click()
+        # elements = self.finds(By.CSS_SELECTOR,'.js_btn_save')
+        # elements[1].click()
 
     def update_page(self):
         content: str = self.find(By.CSS_SELECTOR, ".ww_pageNav_info_text").text
