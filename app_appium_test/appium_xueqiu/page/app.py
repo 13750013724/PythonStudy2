@@ -26,7 +26,7 @@ class App(BasePage):
         pass
 
     def stop(self):
-        self._driver.quit()
+        pass
 
     def main(self) -> Main:
         return Main(self._driver)

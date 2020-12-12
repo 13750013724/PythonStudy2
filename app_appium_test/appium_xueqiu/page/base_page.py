@@ -1,11 +1,9 @@
 import inspect
 import json
-import logging
 
 import yaml
 from appium.webdriver import WebElement
 from appium.webdriver.webdriver import WebDriver
-from selenium.webdriver.common.by import By
 
 from app_appium_test.appium_xueqiu.page.wrapper import handle_black
 
@@ -19,6 +17,9 @@ class BasePage:
     def set_implicitly(self,time):
         self._driver.implicitly_wait(time)
 
+    def screenshot(self, name):
+        self._driver.save_screenshot(name)
+
     def finds(self,locator,value:str=None):
         elements:list
         if isinstance(locator, tuple):
@@ -29,8 +30,6 @@ class BasePage:
 
     @handle_black
     def find(self,locator,value:str=None):
-        logging.info(locator)
-        logging.info(value)
         element:WebElement
         #element = self._driver.find_element(*locator) if isinstance(locator,tuple) else self._driver.find_element(locator, value)
         if isinstance(locator,tuple):
@@ -53,23 +52,24 @@ class BasePage:
         with open(path, encoding="utf-8") as f:
             name = inspect.stack()[1].function
             steps = yaml.safe_load(f)[name]
-            raw = json.dumps(steps)
-            for key,value in self._params.items():
-                # ${name}   |   name : 12345
-                # 12345
+        raw = json.dumps(steps)
+        for key, value in self._params.items():
+            # ${name}   |   name : 12345
+            # 12345
 
-                # ${abc}   |   name : 12345
-                # ${abc}
-                raw = raw.replace(f'${{{key}}}', value)
-            steps = json.loads(raw)
-            for step in steps:
-                if "action" in step.keys():
-                    action = step["action"]
-                    if "click" == action:
-                        self.find(step["by"],step["locator"]).click()
-                    if "send" == action:
-                        self.find(step["by"],step["locator"]).send_keys(step["value"])
-                    if "len > 0" == action:
-                        eles = self.finds(step["by"],step["locator"])
-                        return len(eles) > 0
+            # ${abc}   |   name : 12345
+            # ${abc}
+            raw = raw.replace('${' + key + '}', value)
+            # raw = raw.replace(f'${{{key}}}', value)
+        steps = json.loads(raw)
+        for step in steps:
+            if "action" in step.keys():
+                action = step["action"]
+                if "click" == action:
+                    self.find(step["by"], step["locator"]).click()
+                if "send" == action:
+                    self.find(step["by"], step["locator"]).send_keys(step["value"])
+                if "len > 0" == action:
+                    eles = self.finds(step["by"], step["locator"])
+                    return len(eles) > 0
 

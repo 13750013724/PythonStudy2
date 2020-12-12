@@ -10,5 +10,5 @@ class Main(BasePage):
         # self.find(By.XPATH,"//*[@resource-id='android:id/tabhost']//*[@text='行情']").click()
         self.set_implicitly(10)
         self.steps("../page/main.yaml")
-        self.set_implicitly(5)
+        self.set_implicitly(3)
         return Market(self._driver)
